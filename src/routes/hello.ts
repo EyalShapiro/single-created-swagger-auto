@@ -1,10 +1,21 @@
 import { Router } from 'express';
 import { getHello, postHello } from '../controllers/helloController';
+import { authMiddleware } from '../middlewares/auth';
 
-const helloRoute = Router();
+const router = Router();
 
-helloRoute.get('/', getHello);
+// ---- Routes ---- //
+router.get('/', authMiddleware, getHello);
+router.post('/', authMiddleware, postHello);
+router.post('/test', (req, res) => {
+  /*  #swagger.parameters['body'] = {
+            in: 'body', 
+            description: 'Add a test',
+            schema: { $ref: '#/definitions/someDefinition' }
+    } */
+  res.json({ message: 'This is /hello/path endpoint' });
+});
 
-helloRoute.post('/', postHello);
+// ---- Swagger metadata ---- //
 
-export default helloRoute;
+export default router;

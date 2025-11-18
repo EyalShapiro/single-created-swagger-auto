@@ -1,19 +1,21 @@
 {
   "name": "single-created-swagger-auto",
   "version": "1.1.2",
-  "description": "",
+  "description": "Auto-generated Swagger documentation using swagger-autogen",
   "license": "ISC",
-  "author": "",
+  "author": "Eyal Shapiro",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run swagger && tsc",
+    "build": "tsc",
     "start": "node dist/app.js",
-    "dev": " npx ts-node src/app.ts",
+    "dev": "npm run swagger && nodemon",
     "lint": "eslint 'src/**/*.{js,ts,tsx}' --fix",
-    "format": "prettier --write 'src/**/*.{ts,tsx}'"
+    "format": "prettier --write 'src/**/*.{ts,tsx}'",
+    "swagger": "ts-node src/swagger/start.ts"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
     "morgan": "^1.10.1",
@@ -21,6 +23,7 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/morgan": "^1.9.10",
     "@types/node": "^24.5.2",
@@ -30,7 +33,9 @@
     "eslint": "^9.35.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
+    "nodemon": "^3.1.11",
     "prettier": "^3.6.2",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.47.0"
   }
 }

@@ -1,14 +1,16 @@
 {
-	"compilerOptions": {
-		"target": "ES6",
-		"module": "CommonJS",
-		"strict": true,
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
-		"outDir": "./dist",
-		"rootDir": "./src"
-	},
-	"include": ["src/**/*.ts"],
-	"exclude": ["node_modules"]
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "nodenext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "tsBuildInfoFile": "./node_modules/.cache/tsconfig.tsbuildinfo"
+  },
+  "tsconfigRootDir": "__dirname",
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
 }

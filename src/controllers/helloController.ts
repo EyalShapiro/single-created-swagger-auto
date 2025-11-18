@@ -16,6 +16,7 @@ export const getHello = (req: Request, res: Response) => {
 export function postHello(req: Request, res: Response) {
   try {
     const body = req.body;
+
     const statusCode = 200;
     const timeStamp = res.locals?.timeStamp || new Date().toUTCString();
 
