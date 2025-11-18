@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import { generateSwaggerDocs } from './swaggerAuto';
 export const SWAGGER_WORK = (process.env?.SWAGGER || 'false') === 'true';
 console.log('SWAGGER_WORK:', SWAGGER_WORK);

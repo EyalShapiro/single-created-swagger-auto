@@ -11,14 +11,14 @@ import { errorHandler, notFound404Handle } from './middlewares/errorHandler';
 import { HOST, IS_PROD, PORT } from './config';
 import { generateSwaggerDocs } from './swagger/swaggerAuto';
 import { addTimeStamp } from './middlewares/timeStamp';
-import { corsOptions } from './middlewares/cors';
+import { corsHeaders, corsOptions } from './middlewares/cors';
 import { readSwaggerFile } from './swagger/functions';
 
 const app = express();
 
 app.use(express.json());
 app.use(morgan('dev'));
-
+app.use(corsHeaders);
 app.use(cors(corsOptions));
 app.use(express.json({ limit: '16kb' }));
 

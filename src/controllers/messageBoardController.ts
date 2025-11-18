@@ -30,7 +30,7 @@ export const addMessage = (req: Request, res: Response) => {
     messages.set(newMessage.id, newMessage);
     res.status(201).json({ added: true, message: newMessage });
   } catch (error) {
-    console.log('Error adding message:', error);
+    console.error('Error adding message:', error);
 
     res.status(500).json({ message: ERROR_MSG.internal, statusCode: 500, error });
   }

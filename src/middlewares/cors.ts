@@ -1,5 +1,5 @@
 import { CorsOptions } from 'cors';
-
+import express from 'express';
 import { ORIGINALS_OPTION } from '../config';
 import { getUrlOrigins } from '../utils/getUrlOrigins';
 
@@ -20,4 +20,15 @@ export const corsOptions: CorsOptions = {
     }
   },
   optionsSuccessStatus: 200,
+};
+
+export const corsHeaders = (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
 };

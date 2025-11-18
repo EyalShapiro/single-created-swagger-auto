@@ -7,6 +7,8 @@ import packageJson from '../../package.json';
  * This object defines the metadata and global settings for the auto-generated API documentation
  */
 const SWAGGER_DOCUMENT: SwaggerOptions = {
+  openapi: '3.0.3',
+
   // General API information - pulled from package.json when available
   info: {
     title: 'API Example auto-generated Swagger',
@@ -51,12 +53,11 @@ const SWAGGER_DOCUMENT: SwaggerOptions = {
       },
     },
   },
+  security: [{ bearerAuth: [] }],
   // Legacy Swagger 2.0 fields (still supported by swagger-autogen for compatibility)
-  schemes: ['http' /* , 'https' */] /* Supported protocols*/,
+  schemes: ['http', 'https'] /* Supported protocols*/,
   host: HOST /* Base host (e.g., localhost:3000) - used in Swagger 2.0 mode*/,
   basePath: '/' /* Base path for all routes*/,
-  consumes: ['application/json'] /* Request content types*/,
-  produces: ['application/json'] /* Response content types */,
 };
 
 /**
