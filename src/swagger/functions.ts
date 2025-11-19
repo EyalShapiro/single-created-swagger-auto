@@ -4,7 +4,7 @@ import fsPromises from 'fs/promises';
 
 import { SWAGGER_CONFIG } from './swagger.config';
 import { JsonObject } from 'swagger-ui-express';
-import { parseJson } from '../utils/safeJSONParse.ts';
+import { parseJson } from '../utils/safeParseJSON';
 
 /**
  * Absolute path to the generated Swagger/OpenAPI JSON file.

@@ -1,38 +1,44 @@
 import { Router } from 'express';
 import multer from 'multer';
+
 const router = Router();
+const uploader = multer({ storage: multer.memoryStorage() });
 
-// Storage configuration (example)
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Destination folder for uploaded files
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname); // Unique filename
-  },
-});
-
-// Create an uploader instance with the storage configuration
-const uploader = multer({ storage });
-
-// Upload single file using Multer
-router.post('/upload', uploader.single('singleFile'), (req, res) => {
+router.post('/upload', uploader.single('singleFile'), async (req, res) => {
   /*
-        #swagger.consumes = ['multipart/form-data']  
-        #swagger.parameters['singleFile'] = {
-            in: 'formData',
-            type: 'file',
-            required: 'true',
-            description: 'Some description...',
-    } */
+      #swagger.consumes = ['multipart/form-data']  
+      #swagger.parameters['singleFile'] = {
+          in: 'formData',
+          type: 'file',
+          required: true,
+          description: 'Upload a text file to read its content'
+      }
+    */
 
   const file = req.file;
-  console.info('Uploaded file info:', file);
-  res.json({ message: 'File uploaded successfully', file });
+
+  if (!file) {
+    res.status(400).json({ message: 'No file uploaded', debugger: 'bug in backend!' });
+    return;
+  }
+
+  // Read file content from memory
+  const content = file.buffer.toString('utf8');
+
+  console.log('Uploaded file:', file.originalname);
+  console.log('Content:', content);
+
+  res.json({
+    message: 'File uploaded successfully',
+    fileName: file.originalname,
+    mimeType: file.mimetype,
+    size: file.size,
+    content,
+  });
 });
 
 // Upload multiple files using Multer
-router.post('/uploads', uploader.array('multFiles', 2), (req, res) => {
+router.post('/uploads', uploader.array('multFiles', 5), (req, res) => {
   /*
         #swagger.consumes = ['multipart/form-data']  
         #swagger.parameters['multFiles'] = {

@@ -1,5 +1,5 @@
-export const NODE_ENV = process.env.NODE_ENV || 'development';
-export const IS_PROD = NODE_ENV === 'production';
+export const NODE_ENV = (process.env.NODE_ENV || 'development').trim().toLowerCase();
+export const IS_PROD = ['production', 'prod'].includes(NODE_ENV);
 
 /**
  * Port number for server binding

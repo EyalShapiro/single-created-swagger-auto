@@ -1,6 +1,8 @@
+import 'dotenv/config';
+export * from './server.config';
+
 export * from './origins';
 
-export * from './server.config';
 /**
  * Secret key token used for signing/verifying tokens
  */
