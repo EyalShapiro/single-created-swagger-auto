@@ -42,7 +42,7 @@ app.use(notFound404Handle);
 app.use(errorHandler);
 
 (async function () {
-  const swaggerDocument = (await readSwaggerFile()) ?? (await generateSwaggerDocs());
+  const swaggerDocument = /* (await readSwaggerFile()) ??  */ await generateSwaggerDocs();
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   const server = http.createServer(app);
   server.listen(PORT, async () => {

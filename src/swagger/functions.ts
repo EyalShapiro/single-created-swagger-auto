@@ -21,7 +21,7 @@ export const SWAGGER_FILE_PATH =
  * @param filePath - Optional absolute or relative path (defaults to config)
  * @returns {boolean} true if file exists, false otherwise
  */
-function checkSwaggerFile(filePath: string = SWAGGER_FILE_PATH): boolean {
+export function checkSwaggerFile(filePath: string = SWAGGER_FILE_PATH): boolean {
   if (!fs.existsSync(filePath)) false;
   return true;
 }
@@ -63,6 +63,7 @@ export async function updateSwaggerFile(
     if (!fs.existsSync(dir)) {
       await fsPromises.mkdir(dir, { recursive: true });
     }
+    console.log(swaggerDocument);
 
     await fsPromises.writeFile(filePath, JSON.stringify(swaggerDocument, null, 2), 'utf-8');
     console.info(`Swagger file updated: ${filePath}`);

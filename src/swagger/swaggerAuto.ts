@@ -2,6 +2,8 @@ import { SWAGGER_CONFIG } from './swagger.config';
 import swaggerAutogen from 'swagger-autogen';
 import { type JsonObject } from 'swagger-ui-express';
 import { readSwaggerFile, SWAGGER_FILE_PATH, updateSwaggerFile } from './functions';
+import { createSwaggerRouteData } from './createSwaggerRouteData';
+
 /**
  * Organizes Swagger document paths into tags based on first segment after /api/
  *
@@ -61,12 +63,13 @@ export async function generateSwaggerDocs(swaggerConfig = SWAGGER_CONFIG) {
       swaggerConfig.endpointsRoutes,
       swaggerConfig.document,
     );
+    console.log('get', createSwaggerRouteData.getData());
 
     const swaggerDocument = await readSwaggerFile(fullPath);
-
     const sw = organizeSwaggerTags(swaggerDocument);
     await updateSwaggerFile(sw, fullPath);
 
+    await createSwaggerRouteData.updateSwagger();
     console.info(`Swagger docs generated successfully.in path "${fullPath}"`);
     return sw;
   } catch (error) {
