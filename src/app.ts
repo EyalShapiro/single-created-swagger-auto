@@ -11,7 +11,7 @@ import { errorHandler, notFound404Handle } from './middlewares/errorHandler';
 import { HOST, IS_PROD, PORT } from './config';
 import { addTimeStamp } from './middlewares/timeStamp';
 import { corsOptions } from './middlewares/cors';
-import { readSwaggerFile } from './swagger/functions';
+import { readSwaggerFile } from './swagger/utils/functions';
 import { generateSwaggerDocs } from './swagger/swaggerAuto';
 
 const app = express();
@@ -33,6 +33,7 @@ app.get('/status', (req, res) => {
   res.jsonp({
     status: 'Running',
     timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
   });
 });
 
@@ -49,7 +50,7 @@ app.use(errorHandler);
     try {
       console.info(`\n\x1b[32mServer running on http://${HOST}\x1b[0m`);
 
-      if (IS_PROD) console.info(`\x1b[32mSwagger UI at http://${HOST}/api-docs\x1b[0m`);
+      if (!IS_PROD) console.info(`\x1b[32mSwagger UI at http://${HOST}/api-docs\x1b[0m`);
     } catch (error) {
       console.error('\x1b[31mError initializing server:\x1b[0m', error);
       server.close();

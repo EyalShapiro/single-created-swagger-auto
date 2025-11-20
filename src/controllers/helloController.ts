@@ -13,6 +13,19 @@ export const getHello = (req: Request, res: Response) => {
     res.status(statusCode).json({ message: ERROR_MSG.internal, statusCode, error });
   }
 };
+export const getHelloById = (req: Request, res: Response) => {
+  try {
+    const statusCode = 200;
+    const { id } = req.params;
+    const timeStamp = res.locals?.timeStamp || new Date().toUTCString();
+
+    res.status(statusCode).json({ message: `Hello id=${id}`, statusCode, timeStamp });
+  } catch (error) {
+    console.error(error);
+    const statusCode = 500;
+    res.status(statusCode).json({ message: ERROR_MSG.internal, statusCode, error });
+  }
+};
 export function postHello(req: Request, res: Response) {
   try {
     const body = req.body;
@@ -28,14 +41,6 @@ export function postHello(req: Request, res: Response) {
   }
 }
 export function postUser(req: Request, res: Response) {
-  /*  #swagger.parameters['body'] = {
-            in: 'body', 
-            description: 'Add a test',
-             schema: {
-                $name: 'John Doe',
-                $age: 29,
-            }
-    } */
   const { name, age } = req.body;
 
   // Validation: Ensure both name and age are provided

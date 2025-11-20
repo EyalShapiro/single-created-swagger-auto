@@ -2,9 +2,9 @@ import path from 'path';
 import fs from 'fs';
 import fsPromises from 'fs/promises';
 
-import { SWAGGER_CONFIG } from './swagger.config';
+import { SWAGGER_CONFIG } from '../swagger.config';
 import { JsonObject } from 'swagger-ui-express';
-import { parseJson } from '../utils/safeParseJSON';
+import { parseJson } from '../../utils/safeParseJSON';
 
 /**
  * Absolute path to the generated Swagger/OpenAPI JSON file.
@@ -52,7 +52,7 @@ export async function readSwaggerFile(filePath: string = SWAGGER_FILE_PATH): Pro
  * Synchronously writes – suitable for startup/build time
  *
  * @param {JsonObject} swaggerDocument - Complete OpenAPI object to save
- * @param {string} fullPath - Optional custom path
+ * @param {string} fullPath=SWAGGER_FILE_PATH - Optional custom path
  */
 export async function updateSwaggerFile(
   swaggerDocument: JsonObject,
@@ -63,7 +63,6 @@ export async function updateSwaggerFile(
     if (!fs.existsSync(dir)) {
       await fsPromises.mkdir(dir, { recursive: true });
     }
-    console.log(swaggerDocument);
 
     await fsPromises.writeFile(filePath, JSON.stringify(swaggerDocument, null, 2), 'utf-8');
     console.info(`Swagger file updated: ${filePath}`);
@@ -71,4 +70,17 @@ export async function updateSwaggerFile(
     console.error('Error updating Swagger file:', error);
     throw error;
   }
+}
+/**
+ * Standardizes a path string to ensure it starts with a '/' and has no trailing '/'.
+ * @param {string} path The path string to normalize.
+ * @returns {string} The normalized path string.
+ */
+export function normalizePath(path: string): string {
+  if (!path) return '/';
+  const withLeading = path.startsWith('/') ? path : `/${path}`;
+  if (withLeading.length > 1 && withLeading.endsWith('/')) {
+    return withLeading.slice(0, -1);
+  }
+  return withLeading;
 }
