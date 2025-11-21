@@ -13,11 +13,11 @@ export type HTTPMethod =
   | 'head'
   | 'trace'
   | 'connect'
-  | string;
+  | (string & {});
 export type HeadersType = OutgoingMessage['getHeaders'];
 export type ContentType<T extends HeadersType = HeadersType> = T | (() => T);
 export interface ParametersType {
-  in?: 'query' | 'header' | 'path' | 'cookie' | 'formData' | string;
+  in?: 'query' | 'header' | 'path' | 'cookie' | 'formData' | (string & {});
   name?: string;
   required?: boolean;
   schema?: { type: string } & Record<string, any>; //https://swagger.io/docs/specification/v3_0/describing-parameters/
