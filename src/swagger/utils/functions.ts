@@ -21,10 +21,8 @@ export const SWAGGER_FILE_PATH =
  * @param filePath - Optional absolute or relative path (defaults to config)
  * @returns {boolean} true if file exists, false otherwise
  */
-export function checkSwaggerFile(filePath: string = SWAGGER_FILE_PATH): boolean {
-  if (!fs.existsSync(filePath)) false;
-  return true;
-}
+export const checkSwaggerFile = (filePath: string = SWAGGER_FILE_PATH): boolean =>
+  fs.existsSync(filePath);
 /**
  * Reads and safely parses the Swagger/OpenAPI JSON file from disk
  *

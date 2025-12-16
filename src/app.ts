@@ -11,8 +11,7 @@ import { errorHandler, notFound404Handle } from './middlewares/errorHandler';
 import { HOST, IS_PROD, PORT } from './config';
 import { addTimeStamp } from './middlewares/timeStamp';
 import { corsOptions } from './middlewares/cors';
-import { readSwaggerFile } from './swagger/utils/functions';
-import { generateSwaggerDocs } from './swagger/swaggerAuto';
+import getSwaggerDocument from './swagger';
 
 const app = express();
 
@@ -43,7 +42,7 @@ app.use(notFound404Handle);
 app.use(errorHandler);
 
 (async function () {
-  const swaggerDocument = /* (await readSwaggerFile()) ??  */ await generateSwaggerDocs();
+  const swaggerDocument = await getSwaggerDocument();
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   const server = http.createServer(app);
   server.listen(PORT, async () => {
