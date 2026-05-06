@@ -1,132 +1,124 @@
-# Swagger Automatic Example
+# 🚀 swagger-express-easy
 
-This project is a Node.js application using Express and TypeScript to demonstrate automatic Swagger documentation generation with `swagger-autogen` and `swagger-ui-express`.
+The easiest way to add **OpenAPI 3.0** documentation to your Express application. 
+Stop writing manual JSON/YAML — just write your code, and let us handle the rest.
 
-## Features
+[![npm version](https://img.shields.io/npm/v/swagger-express-easy.svg)](https://www.npmjs.com/package/swagger-express-easy)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-- **Express Server**: A simple server setup with Express.
-- **TypeScript**: The project is written in TypeScript.
-- **Automatic Swagger Generation**: Swagger documentation is generated automatically from JSDoc comments in the controllers or by using a dedicated function.
-- **Swagger UI**: The API documentation is served using `swagger-ui-express`.
-- **ESLint and Prettier**: For code linting and formatting.
+---
 
-## Getting Started
+## ✨ Features
 
-### Installation
+- **Auto-Generation**: Automatically scans your Express routes.
+- **Watch Mode**: Live updates to Swagger UI as you code.
+- **Type-Safe Schemas**: Define reusable Entities with a simple API.
+- **Programmatic Metadata**: Annotate routes directly in your route files.
+- **File Upload Support**: Easy documentation for `multipart/form-data`.
+- **Zero Configuration**: Smart defaults from your `package.json`.
 
-1.  Clone the repository:
-    ```bash
-    git clone https://github.com/EyalShapiro/single-created-swagger-auto.git
-    ```
-2.  Navigate to the project directory:
-    ```bash
-    cd single-created-swagger-auto
-    ```
-3.  Install the dependencies:
-    ```bash
-    npm install
-    ```
+---
 
-### Configuration
+## 📦 Installation
 
-The server configuration is located in `src/config/server.ts`. You can modify the port and host in your `.env` file.
-
-```
-PORT=3000
-HOST=localhost
+```bash
+npm install swagger-express-easy
 ```
 
-## Usage
+---
 
-### Available Scripts
+## 🚀 Quick Start
 
-- **`npm run build`**: Generates the Swagger documentation and compiles the TypeScript code to JavaScript.
-- **`npm start`**: Starts the application from the compiled code in the `dist` directory.
-- **`npm run dev`**: Starts the application in development mode using `ts-node`. The server will automatically restart on file changes.
-- **`npm run lint`**: Lints the source code using ESLint.
-- **`npm run format`**: Formats the source code using Prettier.
+### 1. Initialize in `app.ts`
 
-## API Endpoints
+```typescript
+import express from 'express';
+import { SwaggerAuto } from 'swagger-express-easy';
 
-The following endpoints are available:
+const app = express();
 
-### Hello
+const swagger = new SwaggerAuto(app, {
+  path: '/api-docs', // Where the UI lives
+  watch: true,       // Enable live updates
+  endpointsRoutes: ['./src/routes/*.ts'], // Where your routes are
+});
 
-- **`GET /api/hello`**: Returns a "Hello World!" message.
-- **`POST /api/hello`**: Returns a "get back Hello World!" message along with the request body.
+async function start() {
+  await swagger.setup();
+  app.listen(3000, () => console.log('Server & Swagger running!'));
+}
+start();
+```
 
-### Counter
+---
 
-- **`GET /api/counter`**: Gets the current value of the counter.
-  - Aliases: `GET /api/counter/get`
-- **`POST /api/counter/add`**: Increments the counter by one.
-  - Aliases: `POST /api/counter/inc`, `POST /api/counter/plus`, `POST /api/counter/+`
-- **`POST /api/counter/sub`**: Decrements the counter by one.
-  - Aliases: `POST /api/counter/dec`, `POST /api/counter/minus`, `POST /api/counter/-`
-- **`DELETE /api/counter`**: Resets the counter to zero.
-  - Aliases: `DELETE /api/counter/0`, `DELETE /api/counter/reset`, `DELETE /api/counter/zero`
+## 🛠️ Advanced Usage
 
-### Message Board
+### Reusable Schemas (Entities)
 
-- **`GET /api/message-board`**: Gets all messages.
-- **`POST /api/message-board`**: Adds a new message.
-- **`DELETE /api/message-board`**: Clears all messages.
+Define your models once and reuse them everywhere.
 
-### Files
+```typescript
+import { defineSchema, schemaRef } from 'swagger-express-easy';
 
-- **`POST /api/files/upload`**: Upload a single file.
-- **`POST /api/files/uploads`**: Upload multiple files.
+// Define the schema
+defineSchema('User', {
+  id: { type: 'integer', required: true, example: 1 },
+  username: { type: 'string', required: true, example: 'johndoe' },
+  email: { type: 'string', format: 'email' }
+});
 
-### Fun Facts
+// Use it in a route
+createSwaggerRoute({
+  method: 'get',
+  path: '/api/users/{id}',
+  body: { $ref: schemaRef('User') }
+});
+```
 
-- **`GET /api/fun/random-fact`**: Returns a random fun fact.
+### File Uploads
 
-## Swagger Documentation
+Documenting file uploads is a breeze.
 
-The Swagger documentation is automatically generated from the code. To view the documentation, start the server and navigate to `/api-docs` in your browser.
+```typescript
+createSwaggerRoute({
+  method: 'post',
+  path: '/api/upload',
+  consumes: ['multipart/form-data'],
+  parameters: [
+    {
+      name: 'file',
+      in: 'formData',
+      type: 'file',
+      required: true,
+      description: 'The file to upload'
+    }
+  ],
+  tags: ['Files']
+});
+```
 
-For example, if the server is running on `http://localhost:3000`, the Swagger UI will be available at `http://localhost:3000/api-docs`.
+---
 
-### Swagger Generation Options
+## ⚙️ Configuration Options
 
-There are two ways to add or update Swagger documentation for an endpoint:
+| Option | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `path` | `string` | `'/api-docs'` | The URL path for Swagger UI. |
+| `watch` | `boolean` | `false` | Regenerate docs on every request to `path`. |
+| `outputFile` | `string` | `'swagger-output.json'` | Filename for the generated JSON. |
+| `outputDir` | `string` | `process.cwd()` | Directory for the output file. |
+| `endpointsRoutes`| `string[]` | `['./src/app.ts', ...]` | Glob patterns to scan for routes. |
+| `bearerAuth` | `boolean` | `true` | Automatically add JWT Bearer auth to spec. |
 
-1.  **JSDoc Comments**: Add comments directly within your route files. This is useful for routes that use `multer` for file uploads.
+---
 
-    **Example (`src/routes/files.ts`):**
-    ```typescript
-    router.post('/upload', uploader.single('singleFile'), async (req, res) => {
-      /*
-          #swagger.consumes = ['multipart/form-data']  
-          #swagger.parameters['singleFile'] = {
-              in: 'formData',
-              type: 'file',
-              required: true,
-              description: 'Upload a text file to read its content'
-          }
-        */
-    
-      // ... route handler logic
-    });
-    ```
+## 🧪 Running Tests
 
-2.  **`createSwaggerRoute` Function**: For routes that don't have detailed JSDoc comments or for centralizing documentation, you can use the `createSwaggerRoute` helper function.
+```bash
+npm test
+```
 
-    **Example (`src/routes/funFacts.ts`):**
-    ```typescript
-    import { createSwaggerRoute } from '../swagger/routeStore';
+## 📄 License
 
-    // ... router setup
-
-    router.get('/random-fact', (req, res) => {
-      const random = facts[Math.floor(Math.random() * facts.length)];
-      res.json({ fact: random });
-    });
-
-    // Register to swagger:
-    createSwaggerRoute({
-      method: 'get',
-      path: '/fun/random-fact',
-      description: { text: 'Returns a random fun fact' },
-    });
-    ```
+MIT © [Eyal Shapiro](https://github.com/EyalShapiro)

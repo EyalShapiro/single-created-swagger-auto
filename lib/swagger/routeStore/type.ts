@@ -40,4 +40,11 @@ export type SwaggerRouteDefinition = {
   description?: { text: string };
   body?: { default?: Record<string, any> } & Record<string, any>;
   parameters?: Array<ParametersType & Record<string, any>>;
+  /** Media types the API can consume (e.g. ['multipart/form-data']) */
+  consumes?: string[];
+  /** Media types the API can produce (e.g. ['application/json']) */
+  produces?: string[];
+  /** List of tags for this route */
+  tags?: string[];
 };
+

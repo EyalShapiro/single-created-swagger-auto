@@ -2,9 +2,25 @@ import path from 'path';
 import fs from 'fs';
 import fsPromises from 'fs/promises';
 
-import { SWAGGER_CONFIG } from '../swagger.config';
 import { JsonObject } from 'swagger-ui-express';
-import { parseJson } from '../../utils/safeParseJSON';
+
+import { SWAGGER_CONFIG } from '../swagger.config';
+
+/**
+ * Lightweight JSON parser — inline so the library has no external deps.
+ * Returns `fallbackValue` (default `{}`) if input is falsy or invalid JSON.
+ */
+function parseJson<T extends object | unknown[]>(
+  jsonString: string | null | undefined,
+  fallbackValue: T = {} as T,
+): T {
+  try {
+    if (!jsonString) return fallbackValue;
+    return JSON.parse(jsonString);
+  } catch {
+    return fallbackValue;
+  }
+}
 
 /**
  * Absolute path to the generated Swagger/OpenAPI JSON file.

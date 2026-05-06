@@ -1,4 +1,3 @@
-import 'dotenv/config';
 export * from './server.config';
 
 export * from './origins';

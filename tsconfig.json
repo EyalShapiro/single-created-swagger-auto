@@ -1,17 +1,31 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "module": "nodenext",
-    "strict": true,
+    "module": "commonjs",
     "esModuleInterop": true,
-    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+
+    /* Emit */
+    "declaration": true,
     "outDir": "./dist",
-    "rootDir": "./src",
-    "noImplicitAny": true,
-    "tsBuildInfoFile": "./node_modules/.cache/tsconfig.tsbuildinfo"
+
+    /* Type Checking */
+    "strict": true,
+    "skipLibCheck": true,
+
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"],
+      "swagger-express-easy": ["lib/index.ts"],
+      "swagger-express-easy/*": ["lib/*"]
+    }
   },
-  "tsconfigRootDir": "__dirname",
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*.ts", "lib/**/*.ts"],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  }
 }
