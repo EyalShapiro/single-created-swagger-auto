@@ -1,9 +1,6 @@
 import path from 'path';
 import { SwaggerOptions } from 'swagger-ui-express';
-
-// ---------------------------------------------------------------------------
-//  Types
-// ---------------------------------------------------------------------------
+import _pkg from './utils/_packageJsonData';
 
 /**
  * Configuration for the OpenAPI 'info' block.
@@ -59,21 +56,6 @@ export interface SwaggerConfigOptions {
   /** Raw access to the underlying Swagger configuration object. */
   raw?: SwaggerOptions;
 }
-
-// ---------------------------------------------------------------------------
-//  Internal Helpers
-// ---------------------------------------------------------------------------
-
-let _pkg: Record<string, any> = {};
-try {
-  _pkg = require(path.join(process.cwd(), 'package.json'));
-} catch {
-  // package.json not found — will use hard-coded defaults
-}
-
-// ---------------------------------------------------------------------------
-//  Builder
-// ---------------------------------------------------------------------------
 
 /**
  * Merges user-supplied options with sensible defaults derived from

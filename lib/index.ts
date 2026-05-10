@@ -17,6 +17,9 @@ export type {
 // --- Route-store (annotate routes programmatically) ---
 export { SwaggerRouteStore, createSwaggerRoute, createSwaggerRoutes } from './swagger/routeStore';
 
+// --- Decorators & Wrappers ---
+export { SwaggerRoute, withSwagger } from './swagger/decorators';
+
 // --- Schema / Entity Manager ---
 export {
   SchemaManager,

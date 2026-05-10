@@ -1,18 +1,27 @@
 import { Request, Response } from 'express';
 import ERROR_MSG from '../constant/error_msg';
 
-export const getHello = (req: Request, res: Response) => {
-  try {
-    const statusCode = 200;
-    const timeStamp = res.locals?.timeStamp || new Date().toUTCString();
+import { withSwagger } from '../../lib/swagger/decorators';
 
-    res.status(statusCode).json({ message: 'Hello World!', statusCode, timeStamp });
-  } catch (error) {
-    console.error(error);
-    const statusCode = 500;
-    res.status(statusCode).json({ message: ERROR_MSG.internal, statusCode, error });
+export const getHello = withSwagger(
+  {
+    method: 'get',
+    path: '/api/hello',
+    description: { text: 'Returns a hello message' },
+  },
+  (req: Request, res: Response) => {
+    try {
+      const statusCode = 200;
+      const timeStamp = res.locals?.timeStamp || new Date().toUTCString();
+
+      res.status(statusCode).json({ message: 'Hello World!', statusCode, timeStamp });
+    } catch (error) {
+      console.error(error);
+      const statusCode = 500;
+      res.status(statusCode).json({ message: ERROR_MSG.internal, statusCode, error });
+    }
   }
-};
+);
 export const getHelloById = (req: Request, res: Response) => {
   try {
     const statusCode = 200;

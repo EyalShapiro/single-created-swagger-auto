@@ -98,7 +98,37 @@ createSwaggerRoute({
 });
 ```
 
+### Decorators & Wrappers
+
+If you prefer keeping your documentation right next to your logic, you can use our built-in wrappers and decorators!
+
+#### 1. Wrapper (For Standard Functions)
+```typescript
+import { withSwagger } from 'swagger-express-easy';
+
+export const getHello = withSwagger({
+  method: 'get',
+  path: '/api/hello',
+  description: { text: 'Returns a hello message' }
+}, (req, res) => {
+  res.json({ message: 'Hello World!' });
+});
+```
+
+#### 2. Class Decorator (For ES6 Classes)
+```typescript
+import { SwaggerRoute } from 'swagger-express-easy';
+
+class UserController {
+  @SwaggerRoute({ method: 'get', path: '/api/users', tags: ['Users'] })
+  getUsers(req: Request, res: Response) {
+    res.json([]);
+  }
+}
+```
+
 ---
+
 
 ## ⚙️ Configuration Options
 
