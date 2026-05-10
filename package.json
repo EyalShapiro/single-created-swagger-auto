@@ -8,33 +8,33 @@
     "type": "git",
     "url": "https://github.com/EyalShapiro/swagger-express-easy.git"
   },
-  "main": "dist/lib/index.js",
-  "types": "dist/lib/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
-    "dist/lib",
+    "dist",
     "README.md"
   ],
   "exports": {
     ".": {
-      "require": "./dist/lib/index.js",
-      "types": "./dist/lib/index.d.ts"
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     },
     "./swagger": {
-      "require": "./dist/lib/swagger/index.js",
-      "types": "./dist/lib/swagger/index.d.ts"
+      "require": "./dist/swagger/index.js",
+      "types": "./dist/swagger/index.d.ts"
     },
     "./schemas": {
-      "require": "./dist/lib/swagger/schemas.js",
-      "types": "./dist/lib/swagger/schemas.d.ts"
+      "require": "./dist/swagger/schemas.js",
+      "types": "./dist/swagger/schemas.d.ts"
     },
     "./routeStore": {
-      "require": "./dist/lib/swagger/routeStore/index.js",
-      "types": "./dist/lib/swagger/routeStore/index.d.ts"
+      "require": "./dist/swagger/routeStore/index.js",
+      "types": "./dist/swagger/routeStore/index.d.ts"
     }
   },
   "scripts": {
     "test": "jest",
-    "build": "tsc",
+    "build": "npx rimraf dist && tsc -p tsconfig.build.json",
     "prepublishOnly": "npm run build",
     "start": "node dist/src/app.js",
     "dev": "npm run swagger && nodemon",
